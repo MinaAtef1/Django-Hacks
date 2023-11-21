@@ -20,5 +20,5 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-ga_tracking: G-93SKLE2TBV
+ga_tracking: G-SWMSBZC5WW
 ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
