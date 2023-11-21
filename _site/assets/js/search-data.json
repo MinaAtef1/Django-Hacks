@@ -1,0 +1,44 @@
+{"0": {
+    "doc": "Create admin registry class to keep track of all admin instances",
+    "title": "Create Admin Registry Class to Keep Track of All Admin Instances",
+    "content": "After creating multiple admin instances, we should create some kind of register to keep track of all admin sites created and to register the urls of each admin site. from django.urls import path # A singleton class to register admin sites class AdminRegister(object): admin_sites = {} def __new__(self): if not hasattr(self, 'instance'): self.instance = super(AdminRegister, self).__new__(self) return self.instance def register(self, admin_site, icon,name,title,url)-&gt;None: self.admin_sites[admin_site] = { 'icon': icon, 'name': name, 'title': title, 'url': url, 'app': f'{admin_site.name}:index', 'app_list_function': admin_site.get_app_list, } def get_url_paths(self)-&gt;list: paths = [] for site, site_dict in self.admin_sites.items(): paths.append(path(site_dict['url'], site.urls)) return paths def get_admin_sites(self)-&gt;dict: return self.admin_sites def get_admin_sites(self, request)-&gt;list: data = [] for site, site_dict in self.admin_sites.copy().items(): if site.has_permission(request): site_dict['apps_list'] = site_dict['app_list_function'](request) if request else None data.append(site_dict) return data . so with this let’s register some admin sites . class MyAdminAdmin(ModelsAdmin): site_header = \"My Admin\" site_title = \"My Admin site\" index_title = \"My Admin\" my_admin = MyAdminAdmin(name='my_admin') AdminRegister().register(assertion_admin, 'fa fa-admin', 'my_admin', 'my_admin', 'my_admin/') . now that we have an registered all the admin let’s add the urls . urlpatterns = [ ... ] + AdminRegister().get_url_paths() . ",
+    "url": "/docs/admin/admin-registry.html#create-admin-registry-class-to-keep-track-of-all-admin-instances",
+    
+    "relUrl": "/docs/admin/admin-registry.html#create-admin-registry-class-to-keep-track-of-all-admin-instances"
+  },"1": {
+    "doc": "Create admin registry class to keep track of all admin instances",
+    "title": "Create admin registry class to keep track of all admin instances",
+    "content": " ",
+    "url": "/docs/admin/admin-registry.html",
+    
+    "relUrl": "/docs/admin/admin-registry.html"
+  },"2": {
+    "doc": "Create multiple admin instances",
+    "title": "Creating Multiple Django Admin Instances",
+    "content": "Having multiple Django admin sites is crucial. The ability to split the admin into multiple instances, each with its permissions, models, and logic, can be incredibly valuable. So, how can we do it? . # Creating multiple Django admin instances from django.contrib.admin import AdminSite from myapp.models import orders # Adjust 'myapp' to your app's name class OrdersAdmin(AdminSite): site_header = \"Orders Admin\" site_title = \"Orders Admin Site\" index_title = \"Orders Admin\" site_url = \"\" orders_admin = OrdersAdmin(name='orders_admin') orders_admin.register(orders) . # in urls.py from django.urls import path from orders.admin import orders_admin urlpatterns = [ path('admin/', admin.site.urls), path('orders-admin/', orders_admin.urls) ] . ",
+    "url": "/docs/admin/create-admin-instances.html#creating-multiple-django-admin-instances",
+    
+    "relUrl": "/docs/admin/create-admin-instances.html#creating-multiple-django-admin-instances"
+  },"3": {
+    "doc": "Create multiple admin instances",
+    "title": "Create multiple admin instances",
+    "content": " ",
+    "url": "/docs/admin/create-admin-instances.html",
+    
+    "relUrl": "/docs/admin/create-admin-instances.html"
+  },"4": {
+    "doc": "Django Admin",
+    "title": "Django Admin",
+    "content": "Exploring the Potential of Django Admin . Within the framework of Django, the Django admin emerges as an impotent asset. It empowers developers to efficiently craft a user interface for their projects, all while bypassing the need for extensive frontend expertise. In this exposition, here we will take about some tips and tricks that could be might be useful for Django developers. ",
+    "url": "/docs/admin/django-admin.html",
+    
+    "relUrl": "/docs/admin/django-admin.html"
+  },"5": {
+    "doc": "Home",
+    "title": "Home",
+    "content": "Welcome to my Django Diary! . I’m Mina Atef, a dedicated software engineer that used Django for many of my projects. While working with Django, I’ve faced challenges and learned useful tips and tricks. This diary is where I share what I’ve learned because I believe sharing knowledge is important. Feel free to explore what I wrote here. If you have questions, ideas, or just want to connect with someone who loves Django, don’t hesitate to reach out. Contact me at Linkedin. Let’s embark on this Django journey together! . ",
+    "url": "/",
+    
+    "relUrl": "/"
+  }
+}

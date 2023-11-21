@@ -1,0 +1,24 @@
+title: Django Hacks
+description: A blog used to document my journey in learning Django, and to share my knowledge with others.
+theme: just-the-docs
+
+url: https://minaaaatef.github.io/Django-Hacks/
+
+author: Mina Atef
+
+social:
+  name: Mina Atef
+  links:
+    - https://www.linkedin.com/in/mina-atef-a88034144/
+
+
+aux_links:
+  # Template Repository: https://github.com/just-the-docs/just-the-docs-template
+
+plugins:
+  - jekyll-analytics
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+ga_tracking: G-93SKLE2TBV
+ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)

@@ -1,0 +1,13 @@
+---
+layout: default
+title: Django Admin
+nav_order: 2
+has_children: true
+---
+
+# Django Admin
+
+Exploring the Potential of Django Admin
+
+Within the framework of Django, the Django admin emerges as an impotent asset. It empowers developers to efficiently craft a user interface for their projects, all while bypassing the need for extensive frontend expertise. In this exposition, here we will take about some tips and tricks that could be might be useful for Django developers.
+{: .fs-6 .fw-300 }
