@@ -71,6 +71,11 @@ and then we will modify the `generate_app_dict` function and start using the nam
 now we could use the naming function to change the model name, for example:
 
 ```python
-    def get_model_name():
-        return 'My Custom Model Name'
+def orders_admin_name():
+    draft_orders = Order.objects.filter(status=Order.OrderStatus.DRAFT)
+    if draft_orders:
+        return 'Orders (' + str(draft_orders.count()) + ')'
+    return 'Orders'
+
+orders_admin_register(Order, OrderAdmin,naming_function=orders_admin_name)
 ```
