@@ -34,13 +34,43 @@ To enhance the admin user experience, you might want to group related models tog
 To achieve this, we'll create a custom `ModelsAdmin` class that inherits from the default `AdminSite` in Django. This class allows us to override key methods responsible for generating the app dictionary and organizing the models.
 
 
+
+
 ```python
 
+class ModelsAdmin(admin.AdminSite):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+```
+
+now we want to create our custom register function 
+```python
 class ModelsAdmin(admin.AdminSite):
     def __init__(self, *args, **kwargs):
         self.sub_apps = {}
         super().__init__(*args, **kwargs)
 
+
+    def register_sub_app(self, sub_app_name, sub_app_order):
+        """
+        Register a sub-app in the admin and return a function to register models under this sub-app.
+        """
+        self.sub_apps[sub_app_name] = {'sub_app_name': sub_app_name,
+                                       'sub_app_verbose_name': sub_app_name.replace('_', ' ').title(),
+                                       'sub_app_order': sub_app_order,
+                                       'models': {}}
+
+        def sub_app_register(model_or_iterable, admin_class=None, model_order=None, **options):
+            self.register(model_or_iterable, admin_class, **options)
+            self.sub_apps[sub_app_name]['models'][model_or_iterable] = {
+                'model_order': model_order}
+
+        return sub_app_register
+```
+
+now having our custom register function we can override the get_app_list and the generate_app_dict functions
+```python
+    ...
     def get_sub_models(self):
         """
         Get a dictionary of sub-models, mapping each model to its corresponding sub-app verbose name.
@@ -99,30 +129,14 @@ class ModelsAdmin(admin.AdminSite):
         app_dict = self.generate_app_dict(request)
 
         # Sort the apps alphabetically.
-        app_list = sorted(app_dict.values(), key=lambda x: self.sub_apps.get(x['name'], x['name']))
+        app_list = sorted(app_dict.values(), key=lambda x: self.sub_apps.get(x['name'], {}).get('sub_app_order', float('inf')))
         # Sort the models alphabetically within each app.
         for app in app_list:
             app['models'].sort(key=lambda x: self.get_model_sort(x.get('model', None)))
 
         return app_list
-
-    def register_sub_app(self, sub_app_name, sub_app_order):
-        """
-        Register a sub-app in the admin and return a function to register models under this sub-app.
-        """
-        self.sub_apps[sub_app_name] = {'sub_app_name': sub_app_name,
-                                       'sub_app_verbose_name': sub_app_name.replace('_', ' ').title(),
-                                       'sub_app_order': sub_app_order,
-                                       'models': {}}
-
-        def sub_app_register(model_or_iterable, admin_class=None, model_order=None, **options):
-            self.register(model_or_iterable, admin_class, **options)
-            self.sub_apps[sub_app_name]['models'][model_or_iterable] = {
-                'model_order': model_order}
-
-        return sub_app_register
-
 ```
+
 
 now we can register any sub app in the admin like this 
     
